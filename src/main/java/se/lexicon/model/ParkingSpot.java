@@ -2,6 +2,7 @@ package se.lexicon.model;
 
 public class ParkingSpot {
 
+    public static Object setSpotNumber;
     private int spotNumber;
     private boolean occupied;
     private int areaCode;
@@ -20,7 +21,7 @@ public class ParkingSpot {
         return spotNumber;
     }
 
-    public void setSpotNumber(int spotNumber) {
+    public static void setSpotNumber(int spotNumber) {
         this.spotNumber = spotNumber;
     }
 
