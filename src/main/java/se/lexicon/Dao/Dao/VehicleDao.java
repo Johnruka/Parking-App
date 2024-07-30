@@ -14,5 +14,5 @@ public interface VehicleDao {
 
     void update(Vehicle vehicle);
 
-    int findByCustomerId(int customerId);
+    Optional<Object> findByCustomerId(int customerId);
 }
