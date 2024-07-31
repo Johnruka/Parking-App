@@ -48,4 +48,18 @@ public class CustomerDaoImpl implements CustomerDao {
 
 
     }
+
+    @Override
+    public Void update(Customer customer) {
+        for (Customer customerPhoneNumber : storage) {
+            if (customerPhoneNumber.getPhoneNumber().equalsIgnoreCase(customer.getPhoneNumber())) {
+                customer.setReservation(customer.getReservation());
+                break;
+            }
+
+        }
+    }
+
 }
+
+

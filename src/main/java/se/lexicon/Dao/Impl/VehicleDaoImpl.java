@@ -14,7 +14,7 @@ public class VehicleDaoImpl implements VehicleDao {
     @Override
     public Optional<Vehicle> find(String licensePlate, int customerId) {
         for (Vehicle vehicle : storage) {
-            if (vehicle.getLicensePlate().equals(licensePlate)) {
+            if (vehicle.getLicensePlate().equals(licensePlate)&& vehicle.getCustomer().getId()==customerId) {
                 return Optional.of(vehicle);
             }
         }
@@ -69,7 +69,15 @@ public class VehicleDaoImpl implements VehicleDao {
 
     @Override
     public Optional<Object> findByCustomerId(int customerId) {
-       return Optional.of(customerId);
+        List<Vehicle> foundVehicles = new ArrayList<>();
+        for (Vehicle vehicle : storage) {
+            if (vehicle.getCustomer().getId() == customerId) {
+                foundVehicles.add(vehicle);
+            }
+        }
+        return Optional.of(foundVehicles);
+    }
+
 
     }
-}
+

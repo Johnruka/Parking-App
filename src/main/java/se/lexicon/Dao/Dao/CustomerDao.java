@@ -14,4 +14,6 @@ public interface CustomerDao {
     boolean remove(int id);
 
     List<Customer> findAll();
+
+    Void update(Customer customer);
 }
