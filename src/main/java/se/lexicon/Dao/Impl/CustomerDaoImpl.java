@@ -38,9 +38,8 @@ public class CustomerDaoImpl implements CustomerDao {
         if (!customerOptional.isPresent()) return false;
         storage.remove(customerOptional.get());
         return true;
-
-
     }
+
 
     @Override
     public List<Customer> findAll() {
@@ -50,16 +49,18 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Void update(Customer customer) {
-        for (Customer customerPhoneNumber : storage) {
-            if (customerPhoneNumber.getPhoneNumber().equalsIgnoreCase(customer.getPhoneNumber())) {
-                customer.setReservation(customer.getReservation());
-                break;
+    public void update(Customer customer) {
+        for (Customer storedCustomer : storage) {
+            if (storedCustomer.getId() == customer.getId()) {
+                storedCustomer.setName(customer.getName());
+                storedCustomer.setPhoneNumber(customer.getPhoneNumber());
+                storedCustomer.setReservation(customer.getReservation());
+                // Exist the loop after updating the customer.
+                return ;
             }
-
         }
-    }
 
+    }
 }
 
 

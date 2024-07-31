@@ -15,5 +15,5 @@ public interface CustomerDao {
 
     List<Customer> findAll();
 
-    Void update(Customer customer);
+    void update(Customer customer);
 }
