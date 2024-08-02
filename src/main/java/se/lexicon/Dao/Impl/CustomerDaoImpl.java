@@ -4,6 +4,8 @@ import se.lexicon.Dao.Dao.CustomerDao;
 import se.lexicon.Dao.Sequencer.CustomerSequencer;
 import se.lexicon.model.Customer;
 
+import javax.sound.midi.Sequencer;
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,51 +14,62 @@ public class CustomerDaoImpl implements CustomerDao {
 
     private List<Customer> storage = new ArrayList<>();
 
-    @Override
-    public Customer create(Customer customer) {
-        int id = CustomerSequencer.nextId();
-        customer.setId(id);
-        storage.add(customer);
-        return customer;
+    private static CustomerDaoImpl instance;
+
+    private CustomerDaoImpl() {
+    }
+
+    public static CustomerDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new CustomerDaoImpl();
+        }
+        return instance;
+
 
     }
 
     @Override
+    public Customer create(Customer data) {
+        data.setId(CustomerSequencer.nextId());
+        storage.add(data);
+        return data;
+    }
+
+    @Override
     public Optional<Customer> find(int id) {
-        for (Customer customer : storage) {
-            if (customer.getId() == id) {
-                return Optional.of(customer);
+        for (Customer element : storage) {
+            if (element.getId() == id) {
+                return Optional.of(element);
             }
         }
         return Optional.empty();
-
     }
 
     @Override
     public boolean remove(int id) {
         Optional<Customer> customerOptional = find(id);
         if (!customerOptional.isPresent()) return false;
-        storage.remove(customerOptional.get());
-        return true;
+        else {
+            storage.remove(customerOptional.get());
+            return true;
+        }
     }
-
 
     @Override
     public List<Customer> findAll() {
         return new ArrayList<>(storage);
-
-
     }
 
     @Override
     public void update(Customer customer) {
         for (Customer storedCustomer : storage) {
             if (storedCustomer.getId() == customer.getId()) {
+                // Update the existing customer with the new data
                 storedCustomer.setName(customer.getName());
                 storedCustomer.setPhoneNumber(customer.getPhoneNumber());
                 storedCustomer.setReservation(customer.getReservation());
-                // Exist the loop after updating the customer.
-                return ;
+                // Exit the loop after updating the customer
+                break;
             }
         }
 

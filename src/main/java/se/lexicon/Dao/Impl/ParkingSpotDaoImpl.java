@@ -1,7 +1,7 @@
 package se.lexicon.Dao.Impl;
 
+
 import se.lexicon.Dao.Dao.ParkingSpotDao;
-import se.lexicon.Dao.Sequencer.ParkingSpotSequencer;
 import se.lexicon.model.ParkingSpot;
 
 import java.util.ArrayList;
@@ -12,20 +12,30 @@ public class ParkingSpotDaoImpl implements ParkingSpotDao {
 
     private List<ParkingSpot> storage = new ArrayList<>();
 
+    private static ParkingSpotDaoImpl instance;
+
+    private ParkingSpotDaoImpl() {
+    }
+
+    public static ParkingSpotDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new ParkingSpotDaoImpl();
+        }
+        return instance;
+
+    }
+
 
     @Override
     public ParkingSpot create(ParkingSpot parkingSpot) {
-       int id = ParkingSpotSequencer.nextSpotNumber();
-       ParkingSpot.setSpotNumber(ParkingSpotSequencer.nextSpotNumber());
-
-        storage.add((ParkingSpot) ParkingSpot.setSpotNumber);
-        return (ParkingSpot) ParkingSpot.setSpotNumber;
+        storage.add(parkingSpot);
+        return parkingSpot;
     }
 
     @Override
-    public Optional<ParkingSpot> find(int spotNumber) {
+    public Optional<ParkingSpot> find(int spotNumber, int areaCode) {
         for (ParkingSpot parkingSpot : storage) {
-            if (parkingSpot.getSpotNumber() == spotNumber) {
+            if (parkingSpot.getAreaCode() == areaCode && parkingSpot.getSpotNumber() == spotNumber) {
                 return Optional.of(parkingSpot);
             }
         }
@@ -34,32 +44,39 @@ public class ParkingSpotDaoImpl implements ParkingSpotDao {
     }
 
     @Override
-    public boolean remove(int spotNumber) {
-        Optional<ParkingSpot> ParkingSpotOptional = find(spotNumber);
-        if (!ParkingSpotOptional.isPresent()) return false;
-        storage.remove(ParkingSpotOptional.get());
-        return true;
-
-    }
-
-    @Override
-    public List<ParkingSpot> findAll() {
-        return new ArrayList<>(storage);
-
-    }
-
-    @Override
     public List<ParkingSpot> findByAreaCode(int areaCode) {
-        return List.of();
+        List<ParkingSpot> parkingSpotsByAreaCode = new ArrayList<>();
+
+        for (ParkingSpot spot : storage) {
+            if (spot.getAreaCode() == areaCode) {
+                parkingSpotsByAreaCode.add(spot);
+            }
+        }
+
+        return parkingSpotsByAreaCode;
+
     }
 
     @Override
-    public void occupyParkingSpot(int spotNumber) {
+    public void occupyParkingSpot(int spotNumber, int areaCode) {
+        for (ParkingSpot spot : storage) {
+            if (spot.getAreaCode() == areaCode && spot.getSpotNumber() == spotNumber) {
+                spot.occupy();
+                break;
+            }
+        }
 
     }
 
     @Override
-    public void vacateParkingSpot(int spotNumber) {
+    public void vacateParkingSpot(int spotNumber, int areaCode) {
+        for (ParkingSpot spot : storage) {
+            if (spot.getAreaCode() == areaCode && spot.getSpotNumber() == spotNumber) {
+                spot.vacate();
+                break;
+            }
+        }
 
     }
 }
+

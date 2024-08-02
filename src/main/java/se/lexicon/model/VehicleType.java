@@ -25,5 +25,14 @@ public enum VehicleType {
         return name;
     }
 
+    public static VehicleType getVehicleType(int code) {
+        for (VehicleType type : VehicleType.values()) {
+            if (type.getCode() == code) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Invalid vehicle type code: " + code);
+    }
+
 
 }

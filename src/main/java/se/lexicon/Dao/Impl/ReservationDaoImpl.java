@@ -1,38 +1,66 @@
 package se.lexicon.Dao.Impl;
 
+
 import se.lexicon.Dao.Dao.ReservationDao;
 import se.lexicon.model.Reservation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ReservationDaoImpl implements ReservationDao {
+
+    private List<Reservation> storage = new ArrayList<>();
+
+    private static ReservationDaoImpl instance;
+
+    private ReservationDaoImpl() {
+    }
+
+    public static ReservationDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new ReservationDaoImpl();
+        }
+        return instance;
+
+
+    }
+
     @Override
     public Reservation create(Reservation reservation) {
-        return null;
+        storage.add(reservation);
+        return reservation;
     }
 
     @Override
     public Optional<Reservation> find(String id) {
+        for (Reservation reservation : storage) {
+            if (reservation.getId().equals(id)) {
+                return Optional.of(reservation);
+            }
+        }
         return Optional.empty();
     }
 
     @Override
-    public boolean remove(String id) {
-        return false;
-    }
-
-    @Override
-    public Reservation findByCustomerId(int customerId) {
-        return null;
-    }
-
-    @Override
     public Reservation findByVehicleLicensePlate(String licensePlate) {
-        return null;
+        List<Reservation> reservationsByVehicle = new ArrayList<>();
+        for (Reservation reservation : storage) {
+            if (reservation.getAssociatedVehicle().getLicensePlate().equals(licensePlate)) {
+                reservationsByVehicle.add(reservation);
+            }
+        }
+        return (Reservation) reservationsByVehicle;
     }
 
     @Override
     public Reservation findByParkingSpotNumber(int spotNumber) {
-        return null;
+        List<Reservation> reservationsBySpot = new ArrayList<>();
+        for (Reservation reservation : storage) {
+            if (reservation.getParkingSpot().getSpotNumber() == spotNumber) {
+                reservationsBySpot.add(reservation);
+            }
+        }
+        return (Reservation) reservationsBySpot;
     }
 }

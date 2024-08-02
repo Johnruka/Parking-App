@@ -1,5 +1,6 @@
 package se.lexicon.Dao.Dao;
 
+
 import se.lexicon.model.ParkingSpot;
 
 import java.util.List;
@@ -9,15 +10,13 @@ public interface ParkingSpotDao {
 
     ParkingSpot create(ParkingSpot parkingSpot);
 
-    Optional<ParkingSpot> find(int spotNumber);
-
-    boolean remove(int spotNumber);
-
-    List<ParkingSpot> findAll();
+    Optional<ParkingSpot> find(int spotNumber, int areaCode);
 
     List<ParkingSpot> findByAreaCode(int areaCode);
 
-    void occupyParkingSpot(int spotNumber);
+    void occupyParkingSpot(int spotNumber, int areaCode);
 
-    void vacateParkingSpot(int spotNumber);
+    void vacateParkingSpot(int spotNumber, int areaCode);
+
+
 }

@@ -2,6 +2,7 @@ package se.lexicon.Dao.Dao;
 
 import se.lexicon.model.Vehicle;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public interface VehicleDao {
@@ -14,5 +15,5 @@ public interface VehicleDao {
 
     void update(Vehicle vehicle);
 
-    Optional<Object> findByCustomerId(int customerId);
+    Collection<Vehicle> findByCustomerId(int customerId);
 }

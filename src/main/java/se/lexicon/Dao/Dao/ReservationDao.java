@@ -10,9 +10,6 @@ public interface ReservationDao {
 
     Optional<Reservation> find(String id);
 
-    boolean remove(String id);
-
-    Reservation findByCustomerId(int customerId);
 
     Reservation findByVehicleLicensePlate(String licensePlate);
 

@@ -1,9 +1,11 @@
 package se.lexicon.Dao.Impl;
 
+
 import se.lexicon.Dao.Dao.VehicleDao;
 import se.lexicon.model.Vehicle;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,73 +13,80 @@ public class VehicleDaoImpl implements VehicleDao {
 
     private List<Vehicle> storage = new ArrayList<>();
 
+    private static VehicleDaoImpl instance;
+
+    private VehicleDaoImpl() {
+    }
+
+    public static VehicleDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new VehicleDaoImpl();
+        }
+        return instance;
+
+
+    }
+
+
     @Override
     public Optional<Vehicle> find(String licensePlate, int customerId) {
         for (Vehicle vehicle : storage) {
-            if (vehicle.getLicensePlate().equals(licensePlate)&& vehicle.getCustomer().getId()==customerId) {
+            if (vehicle.getLicensePlate().equals(licensePlate) && vehicle.getCustomer().getId() == customerId) {
                 return Optional.of(vehicle);
             }
         }
         return Optional.empty();
-
     }
 
     @Override
     public Vehicle create(Vehicle vehicle) {
-        if (vehicle == null) throw new IllegalArgumentException("Vehicle Data is null.");
-        Optional<Vehicle> vehicleOptional = find(vehicle.getLicensePlate());
-        if (vehicleOptional.isPresent()) throw new IllegalArgumentException("License plate is duplicate");
-        storage.add(vehicle);
-        return vehicle;
-
-    }
-
-    private Optional<Vehicle> find(String licensePlate) {
-        for (Vehicle vehicle : storage) {
-            if (vehicle.getLicensePlate().equals(licensePlate)) {
-                return Optional.of(vehicle);
+        // Check if the license plate and customer ID already exist in the storage
+        for (Vehicle v : storage) {
+            if (v.getLicensePlate().equals(vehicle.getLicensePlate()) && v.getCustomer().getId() == vehicle.getCustomer().getId()) {
+                // Update the existing vehicle with the new data
+                v.setLicensePlate(vehicle.getLicensePlate());
+                v.setType(vehicle.getType());
+                v.setCustomer(vehicle.getCustomer());
+                // You can update more fields as needed
+                return v;
             }
         }
-        return Optional.empty();
-
+        storage.add(vehicle);
+        return vehicle;
     }
 
     @Override
     public boolean remove(String licensePlate, int customerId) {
-        Optional<Vehicle> vehicleOptional = find(licensePlate);
-        if (!vehicleOptional.isPresent()) return false;
-        storage.remove(vehicleOptional.get());
-        return true;
-
+        Optional<Vehicle> vehicleOptional = find(licensePlate, customerId);
+        if (vehicleOptional.isPresent()) {
+            storage.remove(vehicleOptional.get());
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void update(Vehicle vehicle) {
-        if (vehicle == null)
-            throw new IllegalArgumentException("Vehicle data is null.");
-        //2. find vehicle by its license plate
-        Optional<Vehicle> existingVehicleOptional = find(vehicle.getLicensePlate());
-        if (!existingVehicleOptional.isPresent())
-            throw new IllegalArgumentException("License Plate not found.");
-        //3. if vehicle exists ---> find its index
-        Vehicle existingVehicle = existingVehicleOptional.get();
-        int index = storage.indexOf(existingVehicle);
-        //4. replace it in the existing index
-        storage.set(index, vehicle);
+        for (Vehicle storedVehicle : storage) {
+            if (storedVehicle.getLicensePlate().equals(vehicle.getLicensePlate())) {
+                storedVehicle.setType(vehicle.getType());
+                storedVehicle.setCustomer(vehicle.getCustomer());
+                // Update additional fields as needed
+                break;
+            }
+        }
 
     }
 
     @Override
-    public Optional<Object> findByCustomerId(int customerId) {
-        List<Vehicle> foundVehicles = new ArrayList<>();
+    public Collection<Vehicle> findByCustomerId(int customerId) {
+        List<Vehicle> vehiclesByCustomer = new ArrayList<>();
         for (Vehicle vehicle : storage) {
             if (vehicle.getCustomer().getId() == customerId) {
-                foundVehicles.add(vehicle);
+                vehiclesByCustomer.add(vehicle);
             }
         }
-        return Optional.of(foundVehicles);
+        return vehiclesByCustomer;
     }
-
-
-    }
+}
 

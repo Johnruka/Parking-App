@@ -57,18 +57,20 @@ public class Customer {
         this.reservation = reservation;
     }
 
+    public String getDescription() {
+        StringBuilder description = new StringBuilder();
+        description.append("Customer: ").append(id).append(", Name: ").append(name).append(", Phone Number: ").append(phoneNumber);
+        if (reservation != null) {
+            description.append(", Reservation: ").append(reservation);
+        }
+        return description.toString();
+}
+
     @Override
     public String toString() {
+        return "Customer{" + "id=" + id + ", name='" + name + '\'' + ", phoneNumber='" + phoneNumber + '\'' + '}';
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Customer Id: ").append(id)
-                .append(", Name: ").append(name)
-                .append(", PhoneNumber: ").append(phoneNumber);
-        if (reservation != null) {
-            sb.append(", Reservation Id: ").append(reservation.getId());
-        }
 
-        return sb.toString();
 
     }
 }

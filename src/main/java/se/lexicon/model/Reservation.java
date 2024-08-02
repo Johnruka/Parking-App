@@ -4,64 +4,48 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+/**
+ * Represents a reservation made by a customer for a parking spot.
+ */
+
 public class Reservation {
 
     private String id;
+    private ParkingSpot parkingSpot;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Vehicle associatedVehicle;
-    private ParkingSpot parkingSpot;
 
-    public Reservation(int hours, Vehicle associatedVehicle, ParkingSpot parkingSpot) {
-        this.startTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
-        this.endTime = this.startTime.plusHours(hours).truncatedTo(ChronoUnit.SECONDS);
-        this.associatedVehicle = associatedVehicle;
+    public Reservation(ParkingSpot parkingSpot, int hours, Vehicle associatedVehicle) {
         this.parkingSpot = parkingSpot;
+        this.startTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        this.endTime = this.startTime.plusHours(hours);
+        this.associatedVehicle = associatedVehicle;
     }
 
-    public Reservation(String id, LocalDateTime startTime, LocalDateTime endTime, Vehicle associatedVehicle, ParkingSpot parkingSpot) {
+    public Reservation(String id, ParkingSpot parkingSpot, int hours, Vehicle associatedVehicle) {
+        this(parkingSpot, hours, associatedVehicle);
         this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.associatedVehicle = associatedVehicle;
-        this.parkingSpot = parkingSpot;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public ParkingSpot getParkingSpot() {
+        return parkingSpot;
     }
 
     public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime.truncatedTo(ChronoUnit.SECONDS);
-
-    }
-
     public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime.truncatedTo(ChronoUnit.SECONDS);
-    }
-
     public Vehicle getAssociatedVehicle() {
         return associatedVehicle;
-    }
-
-    public void setAssociatedVehicle(Vehicle associatedVehicle) {
-        this.associatedVehicle = associatedVehicle;
-    }
-
-    public ParkingSpot getParkingSpot() {
-        return parkingSpot;
     }
 
     public void setParkingSpot(ParkingSpot parkingSpot) {
@@ -69,34 +53,38 @@ public class Reservation {
     }
 
     public void extendTime(int hours) {
-        this.endTime = this.endTime.plusHours(hours).truncatedTo(ChronoUnit.SECONDS);
+        this.endTime = endTime.plusHours(hours);
     }
 
-    public void create() {
-        if (parkingSpot == null) throw new IllegalArgumentException("ParkingSpot should not be null.");
-        if (associatedVehicle == null) throw new IllegalArgumentException("AssociatedVehicle should not be null.");
+    public void extendTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 
+    public void setAssociatedVehicle(Vehicle associatedVehicle) {
+        this.associatedVehicle = associatedVehicle;
+    }
+
+    public void reserve() {
+        if (parkingSpot == null) throw new IllegalArgumentException("Parking Spot should not be null.");
+        if (parkingSpot.isOccupied()) throw new IllegalArgumentException("Parking spot is already occupied!");
         this.id = UUID.randomUUID().toString();
-        this.parkingSpot.occupy();
-        this.associatedVehicle.getCustomer().setReservation(this);
+        parkingSpot.occupy();
+        associatedVehicle.getCustomer().setReservation(this);
     }
 
-    public void cancel() {
-        if (parkingSpot == null) throw new IllegalArgumentException("ParkingSpot should not be null.");
-        if (associatedVehicle == null) throw new IllegalArgumentException("AssociatedVehicle should not be null.");
-
+    public void close() {
         parkingSpot.vacate();
         associatedVehicle.getCustomer().setReservation(null);
     }
 
-    @Override
-    public String toString() {
-        return "Reservation{" +
-                "id='" + id + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", associatedVehicle=" + associatedVehicle.getLicensePlate() +
-                ", parkingSpot=" + parkingSpot.getSpotNumber() +
-                '}';
+    public String getDescription() {
+        return new StringBuilder().append("Reservation ID: ").append(id)
+                .append("\nParking Spot: ").append(parkingSpot.getSpotNumber())
+                .append("\nStart Time: ").append(startTime)
+                .append("\nEnd Time: ").append(endTime)
+                .append("\nAssociated Vehicle: ").append(associatedVehicle.getLicensePlate())
+                .toString();
     }
+
+
 }
