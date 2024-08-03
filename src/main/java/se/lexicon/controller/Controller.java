@@ -1,14 +1,14 @@
 package se.lexicon.controller;
 
 
-import se.lexicon.Dao.Dao.CustomerDao;
-import se.lexicon.Dao.Dao.ParkingSpotDao;
-import se.lexicon.Dao.Dao.ReservationDao;
-import se.lexicon.Dao.Dao.VehicleDao;
-import se.lexicon.Dao.Impl.CustomerDaoImpl;
-import se.lexicon.Dao.Impl.ParkingSpotDaoImpl;
-import se.lexicon.Dao.Impl.ReservationDaoImpl;
-import se.lexicon.Dao.Impl.VehicleDaoImpl;
+import se.lexicon.Dao.CustomerDao;
+import se.lexicon.Dao.ParkingSpotDao;
+import se.lexicon.Dao.ReservationDao;
+import se.lexicon.Dao.VehicleDao;
+import se.lexicon.Impl.CustomerDaoImpl;
+import se.lexicon.Impl.ParkingSpotDaoImpl;
+import se.lexicon.Impl.ReservationDaoImpl;
+import se.lexicon.Impl.VehicleDaoImpl;
 import se.lexicon.model.Customer;
 import se.lexicon.model.ParkingSpot;
 import se.lexicon.model.Reservation;

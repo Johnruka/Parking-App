@@ -1,11 +1,9 @@
-package se.lexicon.Dao.Impl;
+package se.lexicon.Impl;
 
-import se.lexicon.Dao.Dao.CustomerDao;
-import se.lexicon.Dao.Sequencer.CustomerSequencer;
+import se.lexicon.Dao.CustomerDao;
+import se.lexicon.Sequencer.CustomerSequencer;
 import se.lexicon.model.Customer;
 
-import javax.sound.midi.Sequencer;
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
