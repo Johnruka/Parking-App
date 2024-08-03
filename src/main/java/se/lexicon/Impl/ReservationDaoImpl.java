@@ -1,7 +1,7 @@
-package se.lexicon.Dao.Impl;
+package se.lexicon.Impl;
 
 
-import se.lexicon.Dao.Dao.ReservationDao;
+import se.lexicon.Dao.ReservationDao;
 import se.lexicon.model.Reservation;
 
 import java.util.ArrayList;

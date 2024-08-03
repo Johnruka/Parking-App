@@ -1,7 +1,7 @@
-package se.lexicon.Dao.Impl;
+package se.lexicon.Impl;
 
 
-import se.lexicon.Dao.Dao.VehicleDao;
+import se.lexicon.Dao.VehicleDao;
 import se.lexicon.model.Vehicle;
 
 import java.util.ArrayList;

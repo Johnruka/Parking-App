@@ -1,4 +1,4 @@
-package se.lexicon.Dao.Sequencer;
+package se.lexicon.Sequencer;
 
 public class ReservationSequencer {
 

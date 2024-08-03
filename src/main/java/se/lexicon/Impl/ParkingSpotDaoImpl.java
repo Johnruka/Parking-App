@@ -1,7 +1,7 @@
-package se.lexicon.Dao.Impl;
+package se.lexicon.Impl;
 
 
-import se.lexicon.Dao.Dao.ParkingSpotDao;
+import se.lexicon.Dao.ParkingSpotDao;
 import se.lexicon.model.ParkingSpot;
 
 import java.util.ArrayList;

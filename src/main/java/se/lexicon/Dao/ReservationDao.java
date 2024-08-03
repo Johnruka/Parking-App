@@ -1,4 +1,4 @@
-package se.lexicon.Dao.Dao;
+package se.lexicon.Dao;
 
 import se.lexicon.model.Reservation;
 
