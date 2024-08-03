@@ -19,9 +19,7 @@ import se.lexicon.view.MainMenuAction;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Locale.Category.DISPLAY;
 
-import static sun.tools.jconsole.Messages.EXIT;
 
 // Controller class responsible for controlling the flow of the application
 public class Controller implements IController {
