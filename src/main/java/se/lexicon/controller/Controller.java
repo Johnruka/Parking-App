@@ -11,12 +11,16 @@ import se.lexicon.Dao.Impl.ReservationDaoImpl;
 import se.lexicon.Dao.Impl.VehicleDaoImpl;
 import se.lexicon.model.Customer;
 import se.lexicon.model.ParkingSpot;
+import se.lexicon.model.Reservation;
+import se.lexicon.model.Vehicle;
+import se.lexicon.view.ConsoleUI;
+import se.lexicon.view.MainMenuAction;
 
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.Locale.Category.DISPLAY;
-import static sun.nio.fs.AbstractPoller.RequestType.REGISTER;
+
 import static sun.tools.jconsole.Messages.EXIT;
 
 // Controller class responsible for controlling the flow of the application
