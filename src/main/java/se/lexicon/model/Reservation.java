@@ -4,9 +4,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
-/**
- * Represents a reservation made by a customer for a parking spot.
- */
+
 
 public class Reservation {
 

@@ -40,14 +40,14 @@ public class VehicleDaoImpl implements VehicleDao {
 
     @Override
     public Vehicle create(Vehicle vehicle) {
-        // Check if the license plate and customer ID already exist in the storage
+
         for (Vehicle v : storage) {
             if (v.getLicensePlate().equals(vehicle.getLicensePlate()) && v.getCustomer().getId() == vehicle.getCustomer().getId()) {
-                // Update the existing vehicle with the new data
+
                 v.setLicensePlate(vehicle.getLicensePlate());
                 v.setType(vehicle.getType());
                 v.setCustomer(vehicle.getCustomer());
-                // You can update more fields as needed
+
                 return v;
             }
         }
@@ -71,7 +71,7 @@ public class VehicleDaoImpl implements VehicleDao {
             if (storedVehicle.getLicensePlate().equals(vehicle.getLicensePlate())) {
                 storedVehicle.setType(vehicle.getType());
                 storedVehicle.setCustomer(vehicle.getCustomer());
-                // Update additional fields as needed
+
                 break;
             }
         }

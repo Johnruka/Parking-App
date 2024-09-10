@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-
-// Controller class responsible for controlling the flow of the application
 public class Controller implements IController {
 
     private ConsoleUI consoleUI; // Instance of ConsoleUI for user interaction
@@ -30,7 +28,7 @@ public class Controller implements IController {
     private VehicleDao vehicleDao; // Data access object for Vehicle entities
     private ReservationDao reservationDao; // Data access object for Reservation entities
 
-    // Constructor initializes necessary DAOs and UI
+
     public Controller() {
         consoleUI = new ConsoleUI();
         parkingSpotDao = ParkingSpotDaoImpl.getInstance();
@@ -123,7 +121,7 @@ public class Controller implements IController {
                 consoleUI.displayErrorMessage("Customer has already reserve a parking!");
             } else {
 
-                // Get reservation data from the user
+
                 Reservation reservationData = consoleUI.reservationPrompt();
 
                 Vehicle vehicle = reservationData.getAssociatedVehicle();
@@ -134,16 +132,15 @@ public class Controller implements IController {
                 vehicle.setCustomer(foundCustomer);
 
 
-                // Check if the selected parking spot is available
                 Optional<ParkingSpot> optionalParkingSpot = parkingSpotDao.find(reservationData.getParkingSpot().getSpotNumber(), reservationData.getParkingSpot().getAreaCode());
                 if (optionalParkingSpot.isPresent()) {
 
                     reservationData.reserve();
 
-                    // Update the parking spot status to occupied
+
                     parkingSpotDao.occupyParkingSpot(reservationData.getParkingSpot().getSpotNumber(), reservationData.getParkingSpot().getAreaCode());
 
-                    // Parking spot is available, proceed with reservation
+
                     Reservation createdReservation = reservationDao.create(reservationData);
                     foundCustomer.setReservation(createdReservation);
                     customerDao.update(foundCustomer);
@@ -152,7 +149,7 @@ public class Controller implements IController {
                     consoleUI.displayCustomerReservation(foundCustomer);
 
                 } else {
-                    // Parking spot is occupied or not found
+
                     consoleUI.displayErrorMessage("Selected parking area and spot not found.");
                 }
 
@@ -165,23 +162,23 @@ public class Controller implements IController {
 
     @Override
     public void displayAndVacateReservedParking() {
-        // Prompt user to enter customer id
+
         consoleUI.displayMessage("Enter your customer id:");
         int customerId = consoleUI.getNumber();
 
-        // Find customer by id
+
         Optional<Customer> foundCustomerOptional = customerDao.find(customerId);
 
-        // Check if customer exists
+
         if (!foundCustomerOptional.isPresent()) {
-            // Display error message if customer not found
+
             consoleUI.displayErrorMessage("Customer not found!");
         } else {
             Customer foundCustomer = foundCustomerOptional.get();
 
-            // Check if customer has a reservation
+
             if (foundCustomer.getReservation() == null) {
-                // Display error message if no reservation found
+
                 consoleUI.displayErrorMessage("There is no reserved Parking for customer id: " + customerId);
             } else {
                 Optional<Reservation> reservationOptional = reservationDao.find(foundCustomer.getReservation().getId());
@@ -192,12 +189,11 @@ public class Controller implements IController {
 
                     Reservation reservation = reservationOptional.get();
 
-                    // Display customer reservation details
+
                     consoleUI.displayCustomerReservation(reservation.getAssociatedVehicle().getCustomer());
 
                     reservation.close();
 
-                    // Vacate the parking spot
                     parkingSpotDao.vacateParkingSpot(reservation.getParkingSpot().getSpotNumber(), reservation.getParkingSpot().getAreaCode());
                     customerDao.update(reservation.getAssociatedVehicle().getCustomer());
 
